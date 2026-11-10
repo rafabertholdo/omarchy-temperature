@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "id": "io.github.rafabertholdo.temperature",
+  "name": "Temperature",
+  "version": "1.0.0",
+  "author": "Rafael Bertholdo",
+  "license": "MIT",
+  "description": "CPU, GPU and disk temperatures in the bar, with sound and notification alerts when they run hot",
+  "kinds": [
+    "bar-widget"
+  ],
+  "entryPoints": {
+    "barWidget": "BarWidget.qml"
+  },
+  "barWidget": {
+    "displayName": "Temperature",
+    "description": "CPU, GPU and disk temperatures with sound alerts",
+    "category": "Info",
+    "allowMultiple": false,
+    "defaultSection": "right",
+    "defaults": {
+      "label": "cpu",
+      "intervalSec": 3,
+      "cpuWarn": 80,
+      "cpuCritical": 90,
+      "gpuWarn": 85,
+      "gpuCritical": 95,
+      "sound": true,
+      "notify": true,
+      "volume": 1.0,
+      "repeatSec": 60,
+      "warnSound": "/usr/share/sounds/freedesktop/stereo/dialog-warning.oga",
+      "criticalSound": "/usr/share/sounds/freedesktop/stereo/suspend-error.oga"
+    },
+    "schema": [
+      { "key": "label", "type": "enum", "label": "Bar label", "options": ["cpu", "gpu", "both", "max"], "defaultValue": "cpu" },
+      { "key": "intervalSec", "type": "integer", "label": "Refresh interval (seconds)", "min": 1, "max": 60, "step": 1, "defaultValue": 3 },
+      { "key": "cpuWarn", "type": "integer", "label": "CPU warning (°C)", "min": 40, "max": 110, "step": 1, "defaultValue": 80 },
+      { "key": "cpuCritical", "type": "integer", "label": "CPU critical (°C)", "min": 40, "max": 110, "step": 1, "defaultValue": 90 },
+      { "key": "gpuWarn", "type": "integer", "label": "GPU warning (°C)", "min": 40, "max": 120, "step": 1, "defaultValue": 85 },
+      { "key": "gpuCritical", "type": "integer", "label": "GPU critical (°C)", "min": 40, "max": 120, "step": 1, "defaultValue": 95 },
+      { "key": "sound", "type": "boolean", "label": "Play alert sounds", "defaultValue": true },
+      { "key": "notify", "type": "boolean", "label": "Show alert notifications", "defaultValue": true },
+      { "key": "volume", "type": "number", "label": "Alert volume (0–1)", "min": 0, "max": 1, "step": 0.1, "defaultValue": 1.0 },
+      { "key": "repeatSec", "type": "integer", "label": "Repeat critical alert every (seconds, 0 = never)", "min": 0, "max": 3600, "step": 10, "defaultValue": 60 },
+      { "key": "warnSound", "type": "path", "label": "Warning sound file", "defaultValue": "/usr/share/sounds/freedesktop/stereo/dialog-warning.oga" },
+      { "key": "criticalSound", "type": "path", "label": "Critical sound file", "defaultValue": "/usr/share/sounds/freedesktop/stereo/suspend-error.oga" }
+    ]
+  }
+}

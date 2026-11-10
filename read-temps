@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+# Prints one line per temperature sensor, read straight from hwmon:
+#   <group>\t<label>\t<millidegrees C>\t<critical millidegrees C, 0 if unknown>
+# group is cpu, gpu or disk. Uses shell builtins only, so a poll forks once.
+shopt -s nullglob
+
+for dir in /sys/class/hwmon/hwmon*; do
+  read -r name < "$dir/name" 2>/dev/null || continue
+  case "$name" in
+    coretemp|k10temp|zenpower|cpu_thermal) group=cpu ;;
+    nouveau|amdgpu|radeon|i915|xe) group=gpu ;;
+    nvme|drivetemp) group=disk ;;
+    *) continue ;;
+  esac
+  for input in "$dir"/temp*_input; do
+    base=${input%_input}
+    value=""
+    read -r value < "$input" 2>/dev/null
+    [[ $value =~ ^-?[0-9]+$ ]] || continue
+    label=$name
+    [[ -r ${base}_label ]] && read -r label < "${base}_label"
+    crit=0
+    [[ -r ${base}_crit ]] && read -r crit < "${base}_crit" 2>/dev/null
+    [[ $crit =~ ^[0-9]+$ ]] || crit=0
+    printf '%s\t%s\t%s\t%s\n' "$group" "$label" "$value" "$crit"
+  done
+done
+
+# The proprietary NVIDIA driver exposes no hwmon node.
+if command -v nvidia-smi >/dev/null 2>&1; then
+  nvidia-smi --query-gpu=name,temperature.gpu --format=csv,noheader,nounits 2>/dev/null |
+    while IFS=, read -r gpu temp; do
+      temp=${temp// /}
+      [[ $temp =~ ^[0-9]+$ ]] && printf 'gpu\t%s\t%d\t0\n' "$gpu" $((temp * 1000))
+    done
+fi
+exit 0

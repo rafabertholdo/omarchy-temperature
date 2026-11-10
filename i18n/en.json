@@ -1,0 +1,22 @@
+{
+  "title": "Temperature",
+  "group.cpu": "CPU",
+  "group.gpu": "GPU",
+  "group.disk": "Disk",
+  "status.normal": "Normal",
+  "status.warm": "Warm",
+  "status.hot": "Hot",
+  "status.noSensors": "No sensors found",
+  "alerts.label": "Sound alerts",
+  "alerts.description": "CPU warns at %1° and is critical at %2°; GPU at %3° and %4°",
+  "alerts.descriptionCpu": "Warns at %1° and is critical at %2°",
+  "alerts.snoozedUntil": "Snoozed until %1",
+  "alerts.test": "Test sound",
+  "alerts.snooze": "Snooze 1 h",
+  "alerts.resume": "Resume",
+  "notify.warnTitle": "%1 is running warm",
+  "notify.criticalTitle": "%1 is overheating",
+  "notify.body": "%1 °C (warning at %2 °C, critical at %3 °C)",
+  "tooltip.muted": "alerts muted",
+  "tooltip.snoozed": "alerts snoozed"
+}
